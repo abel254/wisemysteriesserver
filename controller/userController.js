@@ -1,5 +1,4 @@
 import User from "../model/userModel.js";
-import Pdf from "../model/pdfUploadModel.js";
 import nodemailer from "nodemailer";
 
 // 📨 Create a new user and send devotional email
@@ -11,20 +10,21 @@ export const create = async (req, res) => {
 
     const userExist = await User.findOne({ email });
     if (userExist) {
-      return res(400).json({ message: "User already exists" });
+      return res.status(400).json({ message: "User already exists" });
     }
-    const savedData = await newUser.save();
-    res.status(200).json(savedData);
+    const savedUser = await newUser.save();
+    // res.status(200).json(savedData);
 
     // Fetch the latest uploaded PDF
-    const latestPdf = await Pdf.findOne().sort({ createdAt: -1 });
+    // const latestPdf = await Pdf.findOne().sort({ createdAt: -1 });
 
-    if (!latestPdf) {
-      return res.status(404).json({ message: "No devotional PDF found" });
-    }
+    // if (!latestPdf) {
+    //   return res.status(404).json({ message: "No devotional PDF found" });
+    // }
 
     // Construct the full PDF URL (adjust if deployed)
-    const pdfLink = `http://localhost:8000/${latestPdf.pdfPath}`;
+    const pdfLink =  "https://drive.google.com/file/d/1UTqyZ4e_FHHnTNPbWrEykMrrbp6-GENY/view?usp=sharing";
+
 
     // Configure Nodemailer transporter
     const transporter = nodemailer.createTransport({
